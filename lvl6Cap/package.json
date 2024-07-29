@@ -1,9 +1,9 @@
 {
   "scripts": {
     "start": "node server.js",
-    "build": "npm install ./client && npm run build ./client && npm install"
+    "build": "npm install --prefix ./client && npm run build --prefix ./client && npm install"
   },
-  "name": "lvl5cap",
+  "name": "lvl6cap",
   "version": "1.0.0",
   "main": "server.js",
   "keywords": [],
