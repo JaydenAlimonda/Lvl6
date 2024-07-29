@@ -1,9 +1,9 @@
 const express = require("express");
-const mongoose = require ('mongoose')
+const mongoose = require('mongoose')
 const morgan = require('morgan')
 require('dotenv').config()
 const app = express();
-const {expressjwt} = require('express-jwt')
+const { expressjwt } = require('express-jwt')
 
 const port = process.env.PORT
 const DB = process.env.MONGO_DB
@@ -15,7 +15,7 @@ app.use(express.json())
 app.use(morgan('dev'))
 
 
-mongoose.connect(DB, (err)=>{console.log('connected to db err = ', err)})
+mongoose.connect(DB, (err) => { console.log('connected to db err = ', err) })
 // server.js
 app.use('/api/auth', require('./routes/authRouter.js'))
 
@@ -23,13 +23,13 @@ app.use('/api/tradeposts', expressjwt({ secret: process.env.SECRET, algorithms: 
 app.use('/api/tradeposts', require('./routes/tradePostRouter'))
 
 app.use((err, req, res, next) => {
-    console.log(err)
-    if(err.name === "UnauthorizedError"){
-      res.status(err.status)
-    }
-    return res.send({errMsg: err.message})
-  })
+  console.log(err)
+  if (err.name === "UnauthorizedError") {
+    res.status(err.status)
+  }
+  return res.send({ errMsg: err.message })
+})
 
-app.listen(port, ()=>{
-    console.log('server running port 7500')
+app.listen(port, () => {
+  console.log('server running port 7500')
 })

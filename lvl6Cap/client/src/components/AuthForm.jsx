@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 
 export default function AuthForm(props) {
-const {submit, btnText} = props
+    const { submit, btnText, errMsg } = props
     const [input, setInput] = useState({
         username: "",
         password: ""
@@ -28,23 +28,26 @@ const {submit, btnText} = props
 
 
     return (
-
-        <form onSubmit={handleSubmit}>
-            <input type="text"
-                name='username'
-                value={input.username}
-                onChange={handleChange}
-                placeholder='User'
-            />
-            <input type="password"
-                name='password'
-                value={input.password}
-                onChange={handleChange}
-                placeholder='Pass'
-            />
-            <button>{btnText}</button>
-        </form>
-
+        <div className='auth--form--container'>
+            <form onSubmit={handleSubmit} >
+                <input type="text"
+                    name='username'
+                    value={input.username}
+                    onChange={handleChange}
+                    placeholder='User'
+                    className='auth--input'
+                />
+                <input type="password"
+                    name='password'
+                    value={input.password}
+                    onChange={handleChange}
+                    placeholder='Pass'
+                    className='auth--input'
+                />
+                <p style={{color: 'red'}}>{errMsg}</p>
+                <button className='auth--input'>{btnText}</button>
+            </form>
+        </div>
 
     )
 

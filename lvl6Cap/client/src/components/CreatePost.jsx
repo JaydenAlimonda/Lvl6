@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useContext } from "react";
 import { Context } from "../context/ContextProvider";
 
 export default function CreatePost(props) {
-  const {addPost} = useContext(Context)
+  const { addPost } = useContext(Context)
   // State for new posts
   const [inputs, setInputs] = useState({
     offer: "",
@@ -62,14 +62,6 @@ export default function CreatePost(props) {
             type="text"
             name="location"
             value={inputs.location}
-            onChange={handleChange}
-            className="form-container-inputs"
-          />
-          <p>Enter full name :</p>
-          <input
-            type="text"
-            name="author"
-            value={inputs.author}
             onChange={handleChange}
             className="form-container-inputs"
           />

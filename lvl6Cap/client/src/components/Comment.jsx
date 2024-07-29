@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
-function Comment({ _id, author, content, postId, deleteComment, editComment }) {
+function Comment({ _id, author, content, deleteComment, editComment, postId }) {
   const [isEditing, setIsEditing] = useState(false);
   const [updatedContent, setUpdatedContent] = useState(content);
 
   const handleDelete = () => {
-    deleteComment(_id);
+    deleteComment(postId, _id);
   };
 
   const handleEdit = () => {
@@ -14,7 +13,7 @@ function Comment({ _id, author, content, postId, deleteComment, editComment }) {
   };
 
   const handleSaveEdit = () => {
-    editComment(_id, updatedContent);
+    editComment(postId, _id, updatedContent);
     setIsEditing(false);
   };
 

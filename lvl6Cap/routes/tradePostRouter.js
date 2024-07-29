@@ -65,6 +65,7 @@ tradeRouter.delete('/:postId', (req, res, next) => {
 // Update post
 
 tradeRouter.put('/:postId', (req, res, next) => {
+
     tradePost.findByIdAndUpdate(
         { _id: req.params.postId, user: req.auth._id },
         req.body,
@@ -94,7 +95,7 @@ tradeRouter.get('/:postId/comments', (req, res, next) => {
         return res.status(200).send(tradePost.comments);
     });
 });
-    
+
 // Post Comment
 
 tradeRouter.post('/:postId/comments', (req, res, next) => {
@@ -144,9 +145,50 @@ tradeRouter.put('/:postId/comments/:commentId', (req, res, next) => {
                 res.status(500);
                 return next(err);
             }
-            res.status(200).send(updatedPost);
+            return res.status(200).send(updatedPost);
         }
     );
 });
+
+tradeRouter.put('/upVote/:postId', (req, res,next)=>{
+
+    tradePost.findOneAndUpdate(
+        {_id: req.params.postId},
+        {
+            $addToSet: {upVotes:req.auth._id},
+            $pull: {downVotes:req.auth._id}
+
+        },
+        {new:true},
+        (err,updatedPost)=>{
+            if(err){
+                res.status(500);
+                return next(err)
+            }
+            return res.status(200).send(updatedPost)
+        }
+
+    )
+})
+tradeRouter.put('/downVote/:postId', (req, res,next)=>{
+
+    tradePost.findOneAndUpdate(
+        {_id: req.params.postId},
+        {
+            $addToSet: {downVotes:req.auth._id},
+            $pull: {upVotes:req.auth._id}
+
+        },
+        {new:true},
+        (err,updatedPost)=>{
+            if(err){
+                res.status(500);
+                return next(err)
+            }
+            return res.status(200).send(updatedPost)
+        }
+
+    )
+})
 
 module.exports = tradeRouter;

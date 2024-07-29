@@ -4,65 +4,45 @@ import Home from './components/Home';
 import CreatePost from './components/CreatePost';
 import About from './components/About';
 import PostPage from './components/PostPage';
-import axios from 'axios';
+import NavBar from './components/NavBar';
 import Auth from './components/Auth';
+import Profile from './components/Profile';
 import { useContext } from 'react';
 import { Context } from './context/ContextProvider';
 
 const App = () => {
-  const{token, logout, getPosts, postBoard}=useContext(Context)
-  // Get all posts and set state
-  
+  const { token, logout, getPosts, postBoard } = useContext(Context)
+  // Get posts init for page
 
-  
-    // Get posts init for page
+  useEffect(() => {
+    getPosts();
+  }, [token]);
 
-    useEffect(() => {
-      getPosts();
-    }, [token]);
-  
-    return (
-      <Router>
+  return (
+    <Router >
 
-      <h1>Appalachian Trade</h1>
+      <h1 className='title'>Appalachian Trade</h1>
 
-     { token && <nav className='nav--container'>
-        <Link to='/home' className='navlink'>
-          Home
-        </Link>
-        <Link to='/createPost' className='navlink'>
-          Create Post
-        </Link>
-        <Link to='/about' className='navlink'>
-          About
-        </Link>
-        <button onClick={logout}>logout</button>
-      </nav>}
-
-
+      {token && <NavBar logout={logout} />}
       <Routes>
-
-      
-        <Route path="/" element={!token?<Auth/>:<Navigate to='/home'/>}/>
-      
-      <Route path='/home' element={ token?
+        <Route path="/" element={!token ? <Auth /> : <Navigate to='/home' />} />
+        <Route path='/home' element={token ?
           <div className='post--container'>
             {postBoard.map(post => (
               <div key={post._id} className='trade--posts'>
-                <Home 
-                  {...post}
-                />
+                <Home {...post} />
               </div>
             ))}
-          </div>: <Navigate to='/'/>
+          </div> : <Navigate to='/' />
         } />
 
         <Route path='/createPost' element={<CreatePost btnTxt="Submit" />} />
         <Route path='/about' element={<About />} />
-        <Route path='/post/:id' element={<PostPage />} /> {/* Route for individual item pages */}
-
+        <Route path='/post/:id' element={<PostPage />} />
+        <Route path='/logout' element={<Navigate to='/' />} />
+        <Route path='/profile' element={<Profile />} />
       </Routes>
-
+      {!token && <Navigate to="/" />}
     </Router>
   )
 }
