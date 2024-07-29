@@ -7,7 +7,12 @@ const { expressjwt } = require('express-jwt')
 
 const port = process.env.PORT
 const DB = process.env.MONGO_DB
+import path from 'path'
+import { fileURLToPath } from 'url';
 
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 mongoose.set('strictQuery', true)
 
 app.use(express.json())
@@ -21,6 +26,11 @@ app.use('/api/auth', require('./routes/authRouter.js'))
 
 app.use('/api/tradeposts', expressjwt({ secret: process.env.SECRET, algorithms: ['HS256'] }))
 app.use('/api/tradeposts', require('./routes/tradePostRouter'))
+
+app.use (express.static(path.join('/client/dist')))
+
+app.get('*', (req,res)=> res.sendFile(path.join(__dirname, '/client/dist')))
+
 
 app.use((err, req, res, next) => {
   console.log(err)
